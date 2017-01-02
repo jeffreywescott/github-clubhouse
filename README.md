@@ -13,9 +13,9 @@ This module functions both as a library as well as a command-line tool.
 
 1. Install the module in your project, or globally:
 
-        $ npm install --save github-clubhouse-import
+        $ npm install --save github-clubhouse
         $ # ... OR ...
-        $ npm install -g github-clubhouse-import
+        $ npm install -g github-clubhouse
 
 ## Using the Command-line Interface (CLI)
 
