@@ -1,8 +1,8 @@
 # github-clubhouse
 
-[![Code Climate GPA]()
-[![Code Climate Issue Count]()
-[![Test Coverage]()
+[![Code Climate GPA](https://codeclimate.com/repos/586a009bb716e3008100138b/badges/17d5efb482ed787fc530/gpa.svg)
+[![Code Climate Issue Count](https://codeclimate.com/repos/586a009bb716e3008100138b/badges/17d5efb482ed787fc530/issue_count.svg)
+[![Test Coverage](https://codeclimate.com/repos/586a009bb716e3008100138b/badges/17d5efb482ed787fc530/coverage.svg)
 
 Import GitHub issues as stories in [Clubhouse][clubhouse].
 
