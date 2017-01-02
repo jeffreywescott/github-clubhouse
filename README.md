@@ -45,15 +45,15 @@ The library exports:
 
 ### `githubIssueToClubhouseStory`
 
-**Returns:** Promise
+**Returns:** **(Promise for Object)**: the story data as created
 
 **Parameters:**
 
-- `githubIssueURL` (String): the GitHub issue URL
-- `clubhouseProject` (String): the Clubhouse project name into which to import the issue
-- `options` (Object):
-  - `githubToken` (String): the GitHub API token
-  - `clubhouseToken` (String): the Clubhouse API token
+- `githubIssueURL` **(String)**: the GitHub issue URL
+- `clubhouseProject` **(String)**: the Clubhouse project name into which to import the issue
+- `options` **(Object)**:
+  - `githubToken` **(String)**: the GitHub API token
+  - `clubhouseToken` **(String)**: the Clubhouse API token
 
 
 ## Contributing
