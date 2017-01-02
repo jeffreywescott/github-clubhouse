@@ -1,0 +1,91 @@
+{
+  "name": "github-clubhouse",
+  "version": "0.1.0",
+  "description": "import GitHub issues as stories in Clubhouse",
+  "main": "lib/",
+  "bin": {
+    "gh2ch": "bin/gh2ch.js"
+  },
+  "scripts": {
+    "build": "npm run clean && ./node_modules/.bin/babel -d lib/ src/",
+    "clean": "./node_modules/.bin/rimraf ./lib/*",
+    "prepublish": "npm run build && npm test",
+    "2npm": "./node_modules/.bin/publish",
+    "lint": "./node_modules/.bin/xo",
+    "test:cov": "npm run test:cov:run && npm run test:cov:send",
+    "test:cov:run": "./node_modules/.bin/nyc --reporter=lcov npm run test:run",
+    "test:cov:send": "./node_modules/.bin/codeclimate-test-reporter < ./coverage/lcov.info",
+    "test:run": "NODE_ENV=test ./node_modules/.bin/tape 'lib/**/__tests__/*.test.js' | ./node_modules/.bin/faucet",
+    "test": "npm run build && npm run lint && npm run test:run"
+  },
+  "keywords": [
+    "github",
+    "clubhouse"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LearnersGuild/github-clubhouse.git"
+  },
+  "author": {
+    "name": "Jeffrey Wescott",
+    "email": "jeffrey@learnersguild.org"
+  },
+  "license": "ISC",
+  "engines": {
+    "node": "5.6.x",
+    "npm": "3.7.x"
+  },
+  "xo": {
+    "ignore": [
+      "lib/**",
+      "bin/**"
+    ],
+    "rules": {
+      "comma-dangle": [
+        0
+      ],
+      "no-negated-condition": [
+        0
+      ],
+      "quotes": [
+        2,
+        "single",
+        "avoid-escape"
+      ],
+      "unicorn/filename-case": [
+        0
+      ]
+    },
+    "esnext": true,
+    "space": true,
+    "semicolon": false
+  },
+  "nyc": {
+    "sourceMap": false,
+    "instrument": true
+  },
+  "dependencies": {
+    "babel-runtime": "^6.20.0",
+    "minimist": "^1.2.0",
+    "node-fetch": "^1.6.3",
+    "parse-link-header": "^0.4.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-core": "^6.21.0",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-istanbul": "^3.0.0",
+    "babel-plugin-transform-runtime": "^6.15.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-stage-2": "^6.18.0",
+    "blue-tape": "^1.0.0",
+    "codeclimate-test-reporter": "^0.4.0",
+    "faucet": "0.0.1",
+    "nock": "^9.0.2",
+    "nyc": "^10.0.0",
+    "publish": "^0.6.0",
+    "rimraf": "^2.5.4",
+    "tape": "^4.6.3",
+    "xo": "^0.17.1"
+  }
+}
