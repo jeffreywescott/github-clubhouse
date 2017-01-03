@@ -1,7 +1,8 @@
 import {getIssue, getCommentsForIssue} from './fetchers/gitHub'
 import {listUsers, listProjects, createStory} from './fetchers/clubhouse'
 
-/* eslint-disable import/prefer-default-export */
+export {saveConfig, loadConfig} from './util/config'
+
 export async function githubIssueToClubhouseStory(githubIssueURL, clubhouseProject, options = {}) {
   _assertOption('githubToken', options)
   _assertOption('clubhouseToken', options)
