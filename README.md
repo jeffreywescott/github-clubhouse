@@ -22,15 +22,23 @@ This module functions both as a library as well as a command-line tool.
 1. Learn about how to use the CLI:
 
         $ gh2ch --help
+        Usage:
+          gh2ch GITHUB_ISSUE_URL CLUBHOUSE_PROJECT_NAME
+
+        Options:
+          -h, --help                 display this help message
+          -s, --save-config          save configuration into ~/.github-clubhouse
+          --github-token=TOKEN       your GitHub API token
+          --clubhouse-token=TOKEN    your Clubhouse API token
 
 2. Import an issue:
 
-        $ gh2ch --github-token <GH-TOKEN> --clubhouse-token <CH-TOKEN> https://github.com/myorg/myrepo/issues/1 myproject
+        $ gh2ch --save-config --github-token <GH-TOKEN> --clubhouse-token <CH-TOKEN> https://github.com/myorg/myrepo/issues/1 myproject
 
 
 ### Configuration
 
-If, when you run the command, no `~/.github-clubhouse` file exists, one will be created for you. It will save your GitHub and Clubhouse API tokens so that you don't have to re-type them every time. The file is in `JSON` format, so you can edit it by hand or pre-create it yourself if you so choose. For example:
+You can avoid having to type long API tokens by creating a `~/.github-clubhouse` file. The easiest way to create the file is to pass the `-s` / `--save-config` option along with your tokens the first time you run the command. However, the file is in `JSON` format, so you can edit it by hand or pre-create it yourself if you so choose. For example:
 
 ```json
 {
