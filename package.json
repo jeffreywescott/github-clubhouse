@@ -4,6 +4,7 @@
   "description": "import GitHub issues as stories in Clubhouse",
   "main": "lib/",
   "bin": {
+    "ch2gh": "bin/ch2gh.js",
     "gh2ch": "bin/gh2ch.js"
   },
   "scripts": {

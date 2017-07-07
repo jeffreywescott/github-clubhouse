@@ -3,6 +3,10 @@ import {listUsers, listProjects, createStory} from './fetchers/clubhouse'
 
 export {saveConfig, loadConfig} from './util/config'
 
+export async function clubhouseStoryToGithubIssue(clubhouseStoryId, githubRepoURL, options = {}) {
+  return 'https://github.com/LearnersGuild/github-clubhouse/5'
+}
+
 export async function githubIssueToClubhouseStory(githubIssueURL, clubhouseProject, options = {}) {
   _assertOption('githubToken', options)
   _assertOption('clubhouseToken', options)
