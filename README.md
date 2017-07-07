@@ -31,10 +31,23 @@ This module functions both as a library as well as a command-line tool.
           --github-token=TOKEN       your GitHub API token
           --clubhouse-token=TOKEN    your Clubhouse API token
 
-2. Import an issue:
+        $ ch2gh --help
+        Usage:
+          ch2gh CLUBHOUSE_STORY_NUMBER GITHUB_REPO_URL
+
+        Options:
+          -h, --help                 display this help message
+          -s, --save-config          save configuration into ~/.github-clubhouse
+          --github-token=TOKEN       your GitHub API token
+          --clubhouse-token=TOKEN    your Clubhouse API token
+
+2. Import an issue from GitHub into Clubhouse:
 
         $ gh2ch --save-config --github-token <GH-TOKEN> --clubhouse-token <CH-TOKEN> https://github.com/myorg/myrepo/issues/1 myproject
 
+3. Export a story from Clubhouse to GitHub:
+
+        $ ch2ch --save-config --github-token <GH-TOKEN> --clubhouse-token <CH-TOKEN> 234 https://github.com/myorg/myrepo
 
 ### Configuration
 
