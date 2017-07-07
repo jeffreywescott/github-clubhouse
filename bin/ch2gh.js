@@ -34,8 +34,8 @@ function run() {
   var options = _loadAndOrSaveOptions(args)
 
   clubhouseStoryToGithubIssue(args._[0], args._[1], options)
-    .then(function(issueUrl) {
-      console.info('Created github issue:', issueUrl)
+    .then(function(issue) {
+      console.info('Created github issue:', issue.url)
     })
     .catch(function(err) {
       console.error(err)

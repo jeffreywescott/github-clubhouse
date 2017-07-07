@@ -1,10 +1,30 @@
-import {getIssue, getCommentsForIssue} from './fetchers/gitHub'
-import {listUsers, listProjects, createStory} from './fetchers/clubhouse'
+import url from 'url'
+import Bluebird from 'bluebird'
+
+import {getIssue, getCommentsForIssue, createIssue, createIssueComment} from './fetchers/gitHub'
+import {getStory, listUsers, listProjects, createStory} from './fetchers/clubhouse'
 
 export {saveConfig, loadConfig} from './util/config'
 
 export async function clubhouseStoryToGithubIssue(clubhouseStoryId, githubRepoURL, options = {}) {
-  return 'https://github.com/LearnersGuild/github-clubhouse/5'
+  _assertOption('githubToken', options)
+  _assertOption('clubhouseToken', options)
+
+  const {owner, repo} = _repoAndOwnerFromGithubRepoURL(githubRepoURL)
+
+  const clubhouseUsers = await listUsers(options.clubhouseToken)
+  const clubhouseUsersById = clubhouseUsers.reduce((acc, user) => {
+    acc[user.id] = user
+    return acc
+  })
+
+  const story = await getStory(options.clubhouseToken, clubhouseStoryId)
+  const unsavedIssue = _storyToIssue(story)
+  const unsavedIssueComments = _presentClubhouseComments(story.comments, clubhouseUsersById)
+  const issue = await createIssue(options.githubToken, owner, repo, unsavedIssue)
+  await Bluebird.each(unsavedIssueComments, comment => createIssueComment(options.githubToken, owner, repo, issue.number, comment))
+
+  return issue
 }
 
 export async function githubIssueToClubhouseStory(githubIssueURL, clubhouseProject, options = {}) {
@@ -35,19 +55,20 @@ function _assertOption(name, options) {
 }
 
 /* eslint-disable camelcase */
+
 function _issueToStory(authorId, projectId, issue, issueComments) {
   return {
     project_id: projectId,
     name: issue.title,
     description: issue.body,
-    comments: _presentComments(authorId, issueComments),
+    comments: _presentGithubComments(authorId, issueComments),
     created_at: issue.created_at,
     updated_at: issue.updated_at,
     external_id: issue.url,
   }
 }
 
-function _presentComments(authorId, issueComments) {
+function _presentGithubComments(authorId, issueComments) {
   return issueComments.map(issueComment => ({
     author_id: authorId,
     text: `**[Comment from GitHub user @${issueComment.user.login}:]** ${issueComment.body}`,
@@ -55,4 +76,39 @@ function _presentComments(authorId, issueComments) {
     updated_at: issueComment.updated_at,
     external_id: issueComment.url,
   }))
+}
+
+function _repoAndOwnerFromGithubRepoURL(githubRepoURL) {
+  const {hostname, pathname} = url.parse(githubRepoURL)
+  if (!hostname === 'github.com') {
+    throw new Error(`${githubRepoURL} is not a valid GitHub repository`)
+  }
+
+  const [_, owner, repo] = pathname.split('/')
+  if (!owner.length > 0 || !repo.length > 0) {
+    throw new Error(`${githubRepoURL} is not a valid GitHub repository`)
+  }
+
+  return {owner, repo}
+}
+
+function _storyToIssue(story) {
+  const renderedTasks = story.tasks
+    .map(task => `- [${task.complete ? 'x' : ' '}] ${task.description}`)
+    .join('\n')
+  const renderedTasksSection = renderedTasks.length > 0 ? `\n### Tasks\n\n${renderedTasks}` : ''
+
+  return {
+    title: story.name,
+    body: `${story.description}${renderedTasksSection}`,
+  }
+}
+
+function _presentClubhouseComments(comments, clubhouseUsersById) {
+  return comments.map(comment => {
+    const user = clubhouseUsersById[comment.author_id] || {username: comment.author_id}
+    return {
+      body: `**[Comment from Clubhouse user @${user.username}:]** ${comment.text}`
+    }
+  })
 }
