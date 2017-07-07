@@ -1,6 +1,6 @@
 {
   "name": "github-clubhouse",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "import GitHub issues as stories in Clubhouse",
   "main": "lib/",
   "bin": {

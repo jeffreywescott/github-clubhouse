@@ -76,6 +76,17 @@ The library exports:
   - `githubToken` **(String)**: the GitHub API token
   - `clubhouseToken` **(String)**: the Clubhouse API token
 
+### `clubhouseStoryToGithubIssue`
+
+**Returns:** **(Promise for Object)**: the issue data as created
+
+**Parameters:**
+
+- `clubhouseStoryId` **(Number)**: the Clubhouse story ID
+- `githubRepoURL` **(String)**: the repository URL on GitHub where the issue should be created
+- `options` **(Object)**:
+  - `githubToken` **(String)**: the GitHub API token
+  - `clubhouseToken` **(String)**: the Clubhouse API token
 
 ## Contributing
 
