@@ -70,7 +70,9 @@ Read the [instructions for contributing](./.github/CONTRIBUTING.md).
 
 1. Clone the repository.
 
-2. Run the setup tasks:
+2. Get your `NPM_AUTH_TOKEN` from https://npm.com and `export` it in your shell.
+
+3. Run the setup tasks:
 
         $ npm install
         $ npm test
