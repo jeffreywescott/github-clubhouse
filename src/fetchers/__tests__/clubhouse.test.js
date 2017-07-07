@@ -1,9 +1,36 @@
 import test from 'blue-tape'
 import nock from 'nock'
 
-import {listUsers, listProjects, createStory} from '../clubhouse'
+import {getStory, listUsers, listProjects, createStory} from '../clubhouse'
 
 test('fetchers/clubhouse', t => {
+  t.test('getStory returns a Promise', tt => {
+    tt.plan(1)
+
+    /* eslint-disable camelcase */
+    const expected = [{
+      id: 123,
+      comments: [{
+        id: 234,
+        text: 'a comment',
+      }],
+      tasks: [{
+        id: 345,
+        complete: true,
+        description: 'a task',
+      }],
+      name: 'a name',
+      description: 'a description',
+    }]
+
+    nock('https://api.clubhouse.io')
+      .get('/api/v1/stories/123?token=not-a-real-token')
+      .reply(200, JSON.stringify(expected))
+
+    return getStory('not-a-real-token', 123)
+      .then(data => tt.deepEqual(data, expected))
+  })
+
   t.test('listUsers returns a Promise', tt => {
     tt.plan(1)
 

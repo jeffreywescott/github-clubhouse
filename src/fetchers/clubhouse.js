@@ -8,6 +8,11 @@ function apiURL(path, token) {
   return `https://api.clubhouse.io/api/v1${path}?token=${token}`
 }
 
+export function getStory(token, storyId) {
+  const storyUrl = apiURL(`/stories/${storyId}`, token)
+  return apiFetch(storyUrl, {headers})
+}
+
 export function listUsers(token) {
   const projectsUrl = apiURL('/users', token)
   return apiFetch(projectsUrl, {headers})
