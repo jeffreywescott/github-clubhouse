@@ -1,9 +1,10 @@
 {
   "name": "github-clubhouse",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "import GitHub issues as stories in Clubhouse",
   "main": "lib/",
   "bin": {
+    "ch2gh": "bin/ch2gh.js",
     "gh2ch": "bin/gh2ch.js"
   },
   "scripts": {
@@ -66,6 +67,7 @@
   },
   "dependencies": {
     "babel-runtime": "^6.20.0",
+    "bluebird": "^3.5.0",
     "minimist": "^1.2.0",
     "node-fetch": "^1.6.3",
     "parse-link-header": "^0.4.1"
