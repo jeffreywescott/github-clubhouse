@@ -67,6 +67,7 @@
   },
   "dependencies": {
     "babel-runtime": "^6.20.0",
+    "bluebird": "^3.5.0",
     "minimist": "^1.2.0",
     "node-fetch": "^1.6.3",
     "parse-link-header": "^0.4.1"
