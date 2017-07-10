@@ -28,14 +28,15 @@ function run() {
     return process.exit(0)
   }
   if (args._.length !== 2) {
-    return _die('CLUBHOUSE_STORY_NUMBER and GITHUB_REPO_URL are both required.')
+    return _die('CLUBHOUSE_STORY_URL and GITHUB_REPO_URL are both required.')
   }
 
   var options = _loadAndOrSaveOptions(args)
 
   clubhouseStoryToGithubIssue(args._[0], args._[1], options)
     .then(function(issue) {
-      console.info('Created github issue:', issue.url)
+      /* eslint-disable camelcase */
+      console.info('Created github issue:', issue.html_url)
     })
     .catch(function(err) {
       console.error(err)
@@ -50,7 +51,7 @@ function _die(message) {
 
 function _usage() {
   return 'Usage:\n' +
-    '  ' + path.basename(process.argv[1]) + ' CLUBHOUSE_STORY_NUMBER GITHUB_REPO_URL\n' +
+    '  ' + path.basename(process.argv[1]) + ' CLUBHOUSE_STORY_URL GITHUB_REPO_URL\n' +
     '\n' +
     'Options:\n' +
     '  -h, --help                 display this help message\n' +

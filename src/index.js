@@ -1,16 +1,17 @@
-import url from 'url'
 import Bluebird from 'bluebird'
 
 import {getIssue, getCommentsForIssue, createIssue, createIssueComment} from './fetchers/gitHub'
 import {getStory, listUsers, listProjects, createStory} from './fetchers/clubhouse'
+import {parseClubhouseStoryURL, parseGithubIssueURL, parseGithubRepoURL} from './util/urlParse'
 
 export {saveConfig, loadConfig} from './util/config'
 
-export async function clubhouseStoryToGithubIssue(clubhouseStoryId, githubRepoURL, options = {}) {
+export async function clubhouseStoryToGithubIssue(clubhouseStoryURL, githubRepoURL, options = {}) {
   _assertOption('githubToken', options)
   _assertOption('clubhouseToken', options)
 
-  const {owner, repo} = _repoAndOwnerFromGithubRepoURL(githubRepoURL)
+  const {storyId} = parseClubhouseStoryURL(clubhouseStoryURL)
+  const {owner, repo} = parseGithubRepoURL(githubRepoURL)
 
   const clubhouseUsers = await listUsers(options.clubhouseToken)
   const clubhouseUsersById = clubhouseUsers.reduce((acc, user) => {
@@ -18,8 +19,8 @@ export async function clubhouseStoryToGithubIssue(clubhouseStoryId, githubRepoUR
     return acc
   })
 
-  const story = await getStory(options.clubhouseToken, clubhouseStoryId)
-  const unsavedIssue = _storyToIssue(story)
+  const story = await getStory(options.clubhouseToken, storyId)
+  const unsavedIssue = _storyToIssue(clubhouseStoryURL, story)
   const unsavedIssueComments = _presentClubhouseComments(story.comments, clubhouseUsersById)
   const issue = await createIssue(options.githubToken, owner, repo, unsavedIssue)
   await Bluebird.each(unsavedIssueComments, comment => createIssueComment(options.githubToken, owner, repo, issue.number, comment))
@@ -37,8 +38,7 @@ export async function githubIssueToClubhouseStory(githubIssueURL, clubhouseProje
   const projects = await listProjects(options.clubhouseToken)
   const {id: projectId} = projects.find(project => project.name === clubhouseProject)
 
-  const issueRegExp = /https?:\/\/github.com\/([^/]+)\/([^/]+)\/issues\/(\d+)/
-  const [_, owner, repo, issueNumber] = githubIssueURL.match(issueRegExp)
+  const {owner, repo, issueNumber} = parseGithubIssueURL(githubIssueURL)
   const issue = await getIssue(options.githubToken, owner, repo, issueNumber)
   const issueComments = await getCommentsForIssue(options.githubToken, owner, repo, issueNumber)
 
@@ -78,29 +78,16 @@ function _presentGithubComments(authorId, issueComments) {
   }))
 }
 
-function _repoAndOwnerFromGithubRepoURL(githubRepoURL) {
-  const {hostname, pathname} = url.parse(githubRepoURL)
-  if (!hostname === 'github.com') {
-    throw new Error(`${githubRepoURL} is not a valid GitHub repository`)
-  }
-
-  const [_, owner, repo] = pathname.split('/')
-  if (!owner.length > 0 || !repo.length > 0) {
-    throw new Error(`${githubRepoURL} is not a valid GitHub repository`)
-  }
-
-  return {owner, repo}
-}
-
-function _storyToIssue(story) {
+function _storyToIssue(clubhouseStoryURL, story) {
   const renderedTasks = story.tasks
     .map(task => `- [${task.complete ? 'x' : ' '}] ${task.description}`)
     .join('\n')
   const renderedTasksSection = renderedTasks.length > 0 ? `\n### Tasks\n\n${renderedTasks}` : ''
+  const originalStory = `From [ch${story.id}](${clubhouseStoryURL})`
 
   return {
     title: story.name,
-    body: `${story.description}${renderedTasksSection}`,
+    body: `${originalStory}\n\n${story.description}${renderedTasksSection}`,
   }
 }
 
