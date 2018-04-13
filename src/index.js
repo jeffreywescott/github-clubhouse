@@ -36,7 +36,13 @@ export async function githubIssueToClubhouseStory(githubIssueURL, clubhouseProje
   const {id: authorId} = users[0]
 
   const projects = await listProjects(options.clubhouseToken)
-  const {id: projectId} = projects.find(project => project.name === clubhouseProject)
+  const project = projects.find(project => project.name === clubhouseProject)
+
+  if (!project) {
+    throw new Error(`The '${clubhouseProject}' project wasn't found in your Clubhouse`)
+  }
+
+  const {id: projectId} = project
 
   const {owner, repo, issueNumber} = parseGithubIssueURL(githubIssueURL)
   const issue = await getIssue(options.githubToken, owner, repo, issueNumber)
