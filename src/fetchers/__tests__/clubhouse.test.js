@@ -24,7 +24,7 @@ test('fetchers/clubhouse', t => {
     }]
 
     nock('https://api.clubhouse.io')
-      .get('/api/v1/stories/123?token=not-a-real-token')
+      .get('/api/v2/stories/123?token=not-a-real-token')
       .reply(200, JSON.stringify(expected))
 
     return getStory('not-a-real-token', 123)
@@ -43,7 +43,7 @@ test('fetchers/clubhouse', t => {
     }]
 
     nock('https://api.clubhouse.io')
-      .get('/api/v1/users?token=not-a-real-token')
+      .get('/api/v2/members?token=not-a-real-token')
       .reply(200, JSON.stringify(expected))
 
     return listUsers('not-a-real-token')
@@ -66,7 +66,7 @@ test('fetchers/clubhouse', t => {
     }]
 
     nock('https://api.clubhouse.io')
-      .get('/api/v1/projects?token=not-a-real-token')
+      .get('/api/v2/projects?token=not-a-real-token')
       .reply(200, JSON.stringify(expected))
 
     return listProjects('not-a-real-token')
@@ -90,7 +90,7 @@ test('fetchers/clubhouse', t => {
     }
     const expected = {id: 123, ...story}
     nock('https://api.clubhouse.io')
-      .post('/api/v1/stories?token=not-a-real-token')
+      .post('/api/v2/stories?token=not-a-real-token')
       .reply(200, JSON.stringify(expected))
 
     return createStory('not-a-real-token', story)

@@ -5,7 +5,7 @@ const headers = {
 }
 
 function apiURL(path, token) {
-  return `https://api.clubhouse.io/api/v1${path}?token=${token}`
+  return `https://api.clubhouse.io/api/v2${path}?token=${token}`
 }
 
 export function getStory(token, storyId) {
@@ -14,7 +14,7 @@ export function getStory(token, storyId) {
 }
 
 export function listUsers(token) {
-  const projectsUrl = apiURL('/users', token)
+  const projectsUrl = apiURL('/members', token)
   return apiFetch(projectsUrl, {headers})
 }
 
