@@ -12,42 +12,59 @@ This module functions both as a library as well as a command-line tool.
 ## Getting Started
 
 1. Install the module in your project, or globally:
-
-        $ npm install --save github-clubhouse
-        $ # ... OR ...
-        $ npm install -g github-clubhouse
+```
+  $ npm install --save github-clubhouse
+  $ # ... OR ...
+  $ npm install -g github-clubhouse
+```
 
 ## Using the Command-line Interface (CLI)
 
 1. Learn about how to use the CLI:
 
-        $ gh2ch --help
-        Usage:
-          gh2ch GITHUB_ISSUE_URL CLUBHOUSE_PROJECT_NAME
+```
+  Usage:
+    gh2ch.js [OPTIONS]
 
-        Options:
-          -h, --help                 display this help message
-          -s, --save-config          save configuration into ~/.github-clubhouse
-          --github-token=TOKEN       your GitHub API token
-          --clubhouse-token=TOKEN    your Clubhouse API token
+  Options:
+    -h, --help                     display this help message
+    -n, --dry-run                  test run, do not import
+    -s, --save-config              save configuration into ~/.github-clubhouse
+    --issue=NUMBER                 GitHub issue number
+    --query=QUERY                  GitHub issue query
+                                       e.g. "state:closed created:>2017"
+    --github-token=TOKEN           your GitHub API token
+    --clubhouse-token=TOKEN        your Clubhouse API token
+    --github-project=REPO/PROJECT  your GitHub repo/project name
+    --clubhouse-project=PROJECT    your Clubhouse project name
+    --user-map=JSON-USER_MAP       json object of gh-user:clubhouse-user mappings
+                                       use "*" for default
+                                       e.g. '{"my_gh_id":"my_ch_id", "*":"default_id"}'
 
-        $ ch2gh --help
-        Usage:
-          ch2gh CLUBHOUSE_STORY_NUMBER GITHUB_REPO_URL
+  $ ch2gh --help
+  Usage:
+    ch2gh CLUBHOUSE_STORY_NUMBER GITHUB_REPO_URL
 
-        Options:
-          -h, --help                 display this help message
-          -s, --save-config          save configuration into ~/.github-clubhouse
-          --github-token=TOKEN       your GitHub API token
-          --clubhouse-token=TOKEN    your Clubhouse API token
+  Options:
+    -h, --help                 display this help message
+    -s, --save-config          save configuration into ~/.github-clubhouse
+    --github-token=TOKEN       your GitHub API token
+    --clubhouse-token=TOKEN    your Clubhouse API token
+```
 
-2. Import an issue from GitHub into Clubhouse:
-
-        $ gh2ch --save-config --github-token <GH-TOKEN> --clubhouse-token <CH-TOKEN> https://github.com/myorg/myrepo/issues/1 myproject
+2. Import from GitHub into Clubhouse:
+```
+   # a single issue
+   $ gh2ch.js --github-project <owner>/<repo> --clubhouse-project testing --issue 2950
+   #
+   # multiple issues
+   $ gh2ch.js --github-project <owner>/<repo> --clubhouse-project testing --query "state:open label:bug"
+```
 
 3. Export a story from Clubhouse to GitHub:
-
-        $ ch2ch --save-config --github-token <GH-TOKEN> --clubhouse-token <CH-TOKEN> 234 https://github.com/myorg/myrepo
+```
+   $ ch2gh --save-config --github-token <GH-TOKEN> --clubhouse-token <CH-TOKEN> 234 https://github.com/myorg/myrepo
+```
 
 ### Configuration
 
@@ -70,11 +87,11 @@ The library exports:
 
 **Parameters:**
 
-- `githubIssueURL` **(String)**: the GitHub issue URL
-- `clubhouseProject` **(String)**: the Clubhouse project name into which to import the issue
 - `options` **(Object)**:
   - `githubToken` **(String)**: the GitHub API token
   - `clubhouseToken` **(String)**: the Clubhouse API token
+  - `githubRepo` **(String)**: the GitHub repository (owner/repo)
+  - `clubhouseProject` **(String)**: the Clubhouse project name into which to import the issue
 
 ### `clubhouseStoryToGithubIssue`
 
