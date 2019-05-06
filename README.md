@@ -1,9 +1,5 @@
 # github-clubhouse
 
-[![Code Climate GPA](https://codeclimate.com/repos/586a009bb716e3008100138b/badges/17d5efb482ed787fc530/gpa.svg)](https://codeclimate.com/repos/586a009bb716e3008100138b/feed)
-[![Code Climate Issue Count](https://codeclimate.com/repos/586a009bb716e3008100138b/badges/17d5efb482ed787fc530/issue_count.svg)](https://codeclimate.com/repos/586a009bb716e3008100138b/feed)
-[![Test Coverage](https://codeclimate.com/repos/586a009bb716e3008100138b/badges/17d5efb482ed787fc530/coverage.svg)](https://codeclimate.com/repos/586a009bb716e3008100138b/coverage)
-
 Import GitHub issues as stories in [Clubhouse][clubhouse].
 
 This module functions both as a library as well as a command-line tool.
@@ -24,7 +20,7 @@ This module functions both as a library as well as a command-line tool.
 
 ```
   Usage:
-    gh2ch.js [OPTIONS]
+    gh2ch [OPTIONS]
 
   Options:
     -h, --help                     display this help message
@@ -35,7 +31,7 @@ This module functions both as a library as well as a command-line tool.
                                        e.g. "state:closed created:>2017"
     --github-token=TOKEN           your GitHub API token
     --clubhouse-token=TOKEN        your Clubhouse API token
-    --github-project=REPO/PROJECT  your GitHub repo/project name
+    --github-repo=REPO/PROJECT  your GitHub repo/project name
     --clubhouse-project=PROJECT    your Clubhouse project name
     --user-map=JSON-USER_MAP       json object of gh-user:clubhouse-user mappings
                                        use "*" for default
@@ -55,10 +51,10 @@ This module functions both as a library as well as a command-line tool.
 2. Import from GitHub into Clubhouse:
 ```
    # a single issue
-   $ gh2ch.js --github-project <owner>/<repo> --clubhouse-project testing --issue 2950
+   $ gh2ch --github-repo=<owner>/<repo> --clubhouse-project=testing --issue 2950
    #
    # multiple issues
-   $ gh2ch.js --github-project <owner>/<repo> --clubhouse-project testing --query "state:open label:bug"
+   $ gh2ch --github-repo=<owner>/<repo> --clubhouse-project=testing --query "state:open label:bug"
 ```
 
 3. Export a story from Clubhouse to GitHub:
